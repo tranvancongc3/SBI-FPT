@@ -1,0 +1,34 @@
+dev:
+  env:
+    prefix: sbi-fpt
+    account: '339712933936'
+    region: ap-southeast-1
+    environment: dev
+  java:
+    sg: "sg-0329147c05eabbeb8"
+    key_name: "sbi-fpt-key-name"
+    ami: "ami-0b27123918631e63f"
+    name: "java"
+    branch: "main"
+    repo: "java-hello-world"
+    owner: "tranvancongc3"
+    connectionArn: "arn:aws:codeconnections:ap-southeast-1:339712933936:connection/df84ad2d-f90c-4d63-a63b-0a7d3d0ac479"
+    paramaterStoreEnv: "sbi-fpt-dev-java"
+  vpc:
+    vpc_id: "vpc-00a7e42210e42a5bf"
+    vpcName: vpc
+    cidr: 10.0.0.0/16
+    maxAZs: 4
+    subnets:
+      - cidr: 10.0.11.0/24
+        type: public
+        availabilityZone: ap-southeast-1c
+      - cidr: 10.0.12.0/24
+        type: public
+        availabilityZone: ap-southeast-1a
+      - cidr: 10.0.13.0/24
+        type: private
+        availabilityZone: ap-southeast-1a
+      - cidr: 10.0.14.0/24
+        type: private
+        availabilityZone: ap-southeast-1c
