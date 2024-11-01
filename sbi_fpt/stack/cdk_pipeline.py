@@ -117,10 +117,6 @@ class PipelineCDKStack(Stack):
             environment=codebuild.BuildEnvironment(
                 build_image=codebuild.LinuxBuildImage.from_code_build_image_id("aws/codebuild/standard:7.0"),
                 environment_variables={
-                    "ENV_FILE": codebuild.BuildEnvironmentVariable(
-                        type=codebuild.BuildEnvironmentVariableType.PARAMETER_STORE,
-                        value=codepipeline_context['parameters']
-                    ),
                     "CONTXT_ENV": codebuild.BuildEnvironmentVariable(
                         type=codebuild.BuildEnvironmentVariableType.PLAINTEXT,
                         value=f"{global_context['environment']}"
