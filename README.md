@@ -71,3 +71,8 @@ cdk destroy -c contxt=dev JavaStack
 cdk diff -c contxt=dev PipelineJavaStack
 cdk deploy -c contxt=dev PipelineJavaStack
 cdk destroy -c contxt=dev PipelineJavaStack
+
+
+cdk diff -c contxt=dev PipelineCDKStack
+cdk deploy -c contxt=dev PipelineCDKStack
+cdk destroy -c contxt=dev PipelineCDKStack

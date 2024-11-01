@@ -4,10 +4,18 @@ dev:
     account: '339712933936'
     region: ap-southeast-1
     environment: dev
+  cdk:
+    name: "cdk"
+    parameters: "cdk-dev-parameters"
+    branch: "main"
+    repo: "SBI-FPT"
+    owner: "tranvancongc3"
+    connectionArn: "arn:aws:codeconnections:ap-southeast-1:339712933936:connection/df84ad2d-f90c-4d63-a63b-0a7d3d0ac479"
   java:
-    sg: "sg-0329147c05eabbeb8"
+    sg: "sg-084571521e53cacd0"
     key_name: "sbi-fpt-key-name"
     ami: "ami-0b27123918631e63f"
+    instanceType: "t2.micro"
     name: "java"
     branch: "main"
     repo: "java-hello-world"
@@ -15,7 +23,7 @@ dev:
     connectionArn: "arn:aws:codeconnections:ap-southeast-1:339712933936:connection/df84ad2d-f90c-4d63-a63b-0a7d3d0ac479"
     paramaterStoreEnv: "sbi-fpt-dev-java"
   vpc:
-    vpc_id: "vpc-00a7e42210e42a5bf"
+    vpc_id: "vpc-06c402f10748d46f3"
     vpcName: vpc
     cidr: 10.0.0.0/16
     maxAZs: 4

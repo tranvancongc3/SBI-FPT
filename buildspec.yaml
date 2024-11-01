@@ -1,0 +1,23 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.12
+    commands:
+      # Install dependencies for CDK and other requirements
+      - pip install --upgrade pip
+      - pip install aws-cdk.core
+      - pip install -r requirements.txt
+      - echo $ENV_FILE | tr " " "\n" > parameters.yaml
+
+  build:
+    commands:
+      # Run the build command for Python CDK
+      - cdk synth
+      # Deploy via CDK
+      - cdk deploy FrontendStack -c contxt=$CONTXT_ENV --require-approval never
+
+cache:
+  paths:
+    - '/root/.cache/pip/**/*'

@@ -6,7 +6,7 @@ from aws_cdk import (
 )
 
 import aws_cdk as cdk
-
+from cdk_nag import NagSuppressions
 from constructs import Construct
 
 class SbiFptStack(Stack):
@@ -18,12 +18,19 @@ class SbiFptStack(Stack):
         vpc_config = context['vpc']
 
         # Create VPC
+        NagSuppressions.add_stack_suppressions(self, [
+            {
+                'id': 'AwsSolutions-VPC7',
+                'reason': 'Skip Flow Log',
+            },
+        ])
         vpc = ec2.Vpc(self, "Vpc",
             vpc_name=f"{self.context_global['prefix']}-{self.context_global['environment']}-vpc",
             ip_addresses=ec2.IpAddresses.cidr(vpc_config['cidr']),
             max_azs=vpc_config['maxAZs'],
             subnet_configuration=[]
         )
+
 
         # Output to store VPC and subnet information
         output = {
@@ -32,12 +39,6 @@ class SbiFptStack(Stack):
             'privateSubnets': []
         }
         
-        
-        # Create Key Pair
-        # key_pair = ec2.CfnKeyPair(self, "BastionKeyPair",
-        #     key_name="sbi-fpt-key-name",
-        #     key_type="rsa"
-        # )
         
         # Generate subnets
         self.gen_subnet(vpc_config['subnets'], vpc, context, output)
@@ -84,9 +85,22 @@ class SbiFptStack(Stack):
 
                     # Create Bastion Security Group
                     bastion_sg = ec2.SecurityGroup(self, "BastionSG", vpc=vpc)
+                    NagSuppressions.add_stack_suppressions(self, [
+                        {
+                            'id': 'AwsSolutions-EC23',
+                            'reason': 'Bastion host SG.',
+                        },
+                    ])
                     bastion_sg.add_ingress_rule(ec2.Peer.ipv4("0.0.0.0/0"), ec2.Port.tcp(22))
 
                     # Bastion Instance
+                    NagSuppressions.add_stack_suppressions(self, [
+                        {
+                            'id': 'AwsSolutions-EC29',
+                            'reason': 'Bastion host Termination.',
+                        },
+                    ])
+                    
                     bastion_instance = ec2.Instance(self, "Bastion",
                         vpc=vpc,
                         vpc_subnets=ec2.SubnetSelection(subnets=[public_subnet]),
@@ -98,7 +112,12 @@ class SbiFptStack(Stack):
                         machine_image=ec2.AmazonLinuxImage(
                             generation=ec2.AmazonLinuxGeneration.AMAZON_LINUX_2
                         ),
-                        key_name="sbi-fpt-key-name"
+                        detailed_monitoring=True,
+                        block_devices=[ec2.BlockDevice(
+                            device_name="/dev/xvda",
+                            volume=ec2.BlockDeviceVolume.ebs(10, encrypted=True)
+                        )],
+                        key_name="sbi-fpt-key-name",
                     )
 
                     # Allocate EIP for the Bastion Host
