@@ -14,9 +14,17 @@ phases:
   build:
     commands:
       # Run the build command for Python CDK
-      - cdk synth
-      # Deploy via CDK
-      - cdk deploy FrontendStack -c contxt=$CONTXT_ENV --require-approval never
+      - cdk synth SbiFptStack -c contxt=$CONTXT_ENV --require-approval never
+      - cdk deploy SbiFptStack -c contxt=$CONTXT_ENV --require-approval never
+
+      - cdk synth JavaStack -c contxt=$CONTXT_ENV --require-approval never
+      - cdk deploy JavaStack -c contxt=$CONTXT_ENV --require-approval never
+
+      - cdk synth PipelineJavaStack -c contxt=$CONTXT_ENV --require-approval never
+      - cdk deploy PipelineJavaStack -c contxt=$CONTXT_ENV --require-approval never
+
+      - cdk synth PipelineCDKStack -c contxt=$CONTXT_ENV --require-approval never
+      - cdk deploy PipelineCDKStack -c contxt=$CONTXT_ENV --require-approval never
 
 cache:
   paths:
