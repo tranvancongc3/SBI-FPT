@@ -8,6 +8,7 @@ phases:
       # Install dependencies for CDK and other requirements
       - pip install --upgrade pip
       - python -m venv .venv
+      - chmod +x .venv/bin/activate
       - .venv/bin/activate
       - pip install -r requirements.txt
       - echo $ENV_FILE | tr " " "\n" > parameters.yaml
