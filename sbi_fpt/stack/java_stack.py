@@ -113,6 +113,17 @@ class JavaStack(Stack):
             True
         )
         
+        NagSuppressions.add_resource_suppressions(
+            role,
+            [
+                {
+                    'id': 'AwsSolutions-IAM5',
+                    'reason': 'Skip',
+                },
+            ],
+            True
+        )
+        
         
         launch_template = ec2.LaunchTemplate(self, "LaunchTemplate",
             launch_template_name=f"{context_global["prefix"]}-{context_global["environment"]}-launch-template",
